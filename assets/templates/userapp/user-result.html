@@ -1,0 +1,330 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Fraud Detection Results</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'userapp/fonts/icomoon/style.css'%}">
+
+    <link rel="stylesheet" href="{% static 'userapp/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'userapp/css/jquery-ui.css'%}">
+    <link rel="stylesheet" href="{% static 'userapp/css/owl.carousel.min.css'%}">
+    <link rel="stylesheet" href="{% static 'userapp/css/owl.theme.default.min.css'%}">
+    <link rel="stylesheet" href="{% static 'userapp/css/owl.theme.default.min.css'%}">
+
+    <link rel="stylesheet" href="{% static 'userapp/css/jquery.fancybox.min.css'%}">
+
+    {% comment %} <link rel="stylesheet" href="{% static 'userapp/css/bootstrap-datepicker.css'%}"> {% endcomment %}
+
+    <link rel="stylesheet" href="{% static 'userapp/fonts/flaticon/font/flaticon.css'%}">
+
+    <link rel="stylesheet" href="{% static 'userapp/css/aos.css'%}">
+
+    <link rel="stylesheet" href="{% static 'userapp/css/style.css'%}">
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+  </head>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  
+    {% if messages %}
+    {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <script>swal({
+                    title: "Success!",
+                    text: "{{message}}",
+                    icon: "success",
+                    button: "OK",
+                });
+            </script>
+        
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+            <script>swal({
+                    title: "Warning :)",
+                    text: "{{message}}",
+                    icon: "warning",
+                    button: "OK",
+                
+                });
+            </script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            <script>swal({
+                    title: "info :)",
+                    text: "{{message}}",
+                    icon: "info",
+                    button: "OK",
+                });
+            </script>
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <script>swal({
+                    title: "error :)",
+                    text: "{{message}}",
+                    icon: "error",
+                    button: "OK",
+                });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+  <div id="overlayer"></div>
+  <div class="loader">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+   
+    
+    <header class="site-navbar js-sticky-header site-navbar-target navback" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center">
+          
+          <div class="col-6 col-xl-2">
+            <h1 class="mb-0 site-logo"><a href="{% url 'home' %}" class="h2 mb-0">SVT<span class="text-primary">.</span> </a></h1>
+          </div>
+
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+
+              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+               
+                <li><a href="{% url 'user_dash' %}" class="nav-link">Dashboard</a></li>
+                <li><a href="{% url 'user_profile' %}" class="nav-link">Profile</a></li>
+              <li><a href="{% url 'user_predict' %}" class="nav-link active">Detect Fraud</a></li>
+                <li><a href="{% url 'home' %}" class="nav-link">Logout</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+
+
+          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+      </div>
+      
+    </header>
+
+ 
+
+<section class="site-section bg-light" data-aos="fade">
+
+<div class="container">
+
+    <!-- 🔥 RESULT HEADER -->
+    <div class="text-center mb-4">
+      <h2 class="section-title mt-5">Detect Fraud Results</h2>
+        <h1 class="fw-bold">Transaction Status</h1>
+
+        {% if p.result == 'Fraud' %}
+            <h2 class="text-danger fw-bold">⚠️ FRAUD DETECTED</h2>
+        {% else %}
+            <h2 class="text-success fw-bold">✅ GENUINE TRANSACTION</h2>
+        {% endif %}
+
+        <p class="mt-2">
+            Fraud Probability: 
+            <strong>{{ p.fraud_probability }}</strong>
+        </p>
+    </div>
+
+    <div class="row">
+      <!-- LEFT SECTION: MAIN CARD -->
+      <div class="col-lg-6">
+      <div class="card shadow-lg border-0 p-4 mb-5 h-100">
+      <h4 class="mb-3 text-primary">Transaction Details</h4>
+
+      <div class="row text-center mb-3">
+      <div class="col">
+        <h6>Type</h6>
+        <p class="fw-bold">{{ p.type }}</p>
+      </div>
+      <div class="col">
+        <h6>Amount</h6>
+        <p class="fw-bold text-primary">{{ p.amount }}</p>
+      </div>
+      </div>
+
+      <hr>
+
+      <div class="row text-center mb-3">
+      <div class="col">
+        <h6>Old Balance (Sender)</h6>
+        <p>{{ p.oldbalanceOrg }}</p>
+      </div>
+      <div class="col">
+        <h6>New Balance (Sender)</h6>
+        <p>{{ p.newbalanceOrig }}</p>
+      </div>
+      </div>
+
+      <div class="row text-center">
+      <div class="col">
+        <h6>Old Balance (Receiver)</h6>
+        <p>{{ p.oldbalanceDest }}</p>
+      </div>
+      <div class="col">
+        <h6>New Balance (Receiver)</h6>
+        <p>{{ p.newbalanceDest }}</p>
+      </div>
+      </div>
+
+      <hr class="mt-4">
+
+      <div class="text-center">
+      {% if p.result == 'Genuine' %}
+        <img src="{% static 'userapp/images/genuine.jpg' %}" 
+         class="img-fluid rounded shadow" width="200px">
+      {% else %}
+        <img src="{% static 'userapp/images/fraud.jpg' %}" 
+         class="img-fluid rounded shadow" width="200px">
+      {% endif %}
+      </div>
+      </div>
+      </div>
+
+      <!-- RIGHT SECTION: VISUAL ANALYSIS -->
+      <div class="col-lg-6">
+      <div class="card shadow-lg border-0 p-4 h-100">
+      <!-- 📊 SHAP GRAPH -->
+      <h4 class="mb-3 text-center">📊 Feature Contribution (SHAP)</h4>
+      <canvas id="shapChart"></canvas>
+      </div>
+      </div>
+    </div>
+
+       
+      </div>
+      </div>
+    </div>
+
+    </div>
+
+    </section>
+
+  <script>
+const shapCanvas = document.getElementById('shapChart');
+
+if (shapCanvas) {
+
+  const shapData = {{ shap_values|safe }};
+
+  const labels = Object.keys(shapData);
+  const values = Object.values(shapData);
+
+  const sorted = labels.map((key, i) => ({
+    key: key,
+    value: values[i]
+  })).sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+
+  const sortedLabels = sorted.map(item => item.key);
+  const sortedValues = sorted.map(item => item.value);
+
+  const shapCtx = shapCanvas.getContext('2d');
+
+  new Chart(shapCtx, {
+    type: 'bar',
+    data: {
+      labels: sortedLabels,
+      datasets: [{
+        data: sortedValues,
+        backgroundColor: sortedValues.map(v => v > 0 ? '#dc3545' : '#28a745')
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Impact on Prediction'
+          }
+        }
+      }
+    }
+  });
+
+}
+
+  </script>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-5">
+                <h2 class="footer-heading mb-4">About the Project</h2>
+                <p>This is a final year BTech project developed to enhance security in financial systems. The goal is to reduce fraud, protect customer data, and improve trust in digital transactions using machine learning.</p>
+              </div>
+              <div class="col-md-3 ml-auto">
+                <h2 class="footer-heading mb-4">Quick Links</h2>
+                <ul class="list-unstyled">
+                  <li><a href="{% url 'about' %}" class="smoothscroll">About Us</a></li>
+                  <li><a href="{% url 'contact' %}" class="smoothscroll">Contact Us</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3 footer-social">
+                <h2 class="footer-heading mb-4">Follow Us</h2>
+                <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row pt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+              <p class="copyright"><small>
+             
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
+            All rights reserved | Designed by SVT
+           </small></p>
+        
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+
+  </div> <!-- .site-wrap -->
+
+<script src="{% static 'userapp/js/jquery-3.3.1.min.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery-ui.js'%}"></script>
+  <script src="{% static 'userapp/js/popper.min.js'%}"></script>
+  <script src="{% static 'userapp/js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'userapp/js/owl.carousel.min.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery.countdown.min.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery.easing.1.3.js'%}"></script>
+  <script src="{% static 'userapp/js/aos.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery.fancybox.min.js'%}"></script>
+  <script src="{% static 'userapp/js/jquery.sticky.js'%}"></script>
+  <script src="{% static 'userapp/js/isotope.pkgd.min.js'%}"></script>
+
+  
+  <script src="{% static 'userapp/js/main.js'%}"></script>
+
+  
+  </body>
+</html>

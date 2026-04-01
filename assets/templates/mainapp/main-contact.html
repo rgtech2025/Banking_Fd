@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Contact Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'mainapp/fonts/icomoon/style.css'%}">
+
+    <link rel="stylesheet" href="{% static 'mainapp/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'mainapp/css/jquery-ui.css'%}">
+    <link rel="stylesheet" href="{% static 'mainapp/css/owl.carousel.min.css'%}">
+    <link rel="stylesheet" href="{% static 'mainapp/css/owl.theme.default.min.css'%}">
+    <link rel="stylesheet" href="{% static 'mainapp/css/owl.theme.default.min.css'%}">
+
+    <link rel="stylesheet" href="{% static 'mainapp/css/jquery.fancybox.min.css'%}">
+
+    <link rel="stylesheet" href="{% static 'mainapp/fonts/flaticon/font/flaticon.css'%}">
+
+    <link rel="stylesheet" href="{% static 'mainapp/css/aos.css'%}">
+
+    <link rel="stylesheet" href="{% static 'mainapp/css/style.css'%}">
+    
+  </head>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  
+
+  <div id="overlayer"></div>
+  <div class="loader">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+   
+    
+    <header class="site-navbar js-sticky-header site-navbar-target navback" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center">
+          
+          <div class="col-6 col-xl-2">
+            <h1 class="mb-0 site-logo"><a href="{% url 'home' %}" class="h2 mb-0">SVT<span class="text-primary">.</span> </a></h1>
+          </div>
+
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+
+              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                <li><a href="{% url 'admin_login' %}" class="nav-link">Admin</a></li>
+                <li><a href="{% url 'user_login' %}" class="nav-link">User</a></li>
+                <li><a href="{% url 'about' %}" class="nav-link">About Us</a></li>
+                <li><a href="{% url 'contact' %}" class="nav-link active">Contact</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+
+
+          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px; margin-bottom:5px;"><a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+      </div>
+      
+    </header>
+
+  
+    
+   
+    <section class="site-section bg-light" id="contact-section" data-aos="fade">
+       
+       <div class="container">
+          <div class="row mb-5">
+            <div class="col-12 text-center">
+              <h2 class="section-title mb-3 mt-5">Contact Us</h2>
+            </div>
+          </div>
+          <div class="row mb-5">
+            </div>
+          
+          <div class="row justify-content-between">
+            <div class="col-md-6 mb-5 regcard p-5">
+  
+              
+  
+              <form method="POST" name="myform" enctype="multipart/form-data" onsubmit="return validate();">
+                {% csrf_token %}
+                <h2 class="h4 mb-5 text-center">Feedback & Suggestions</h2> 
+                
+                <div class="row form-group">
+                  <div class="col-md-6 mb-3 mb-md-0">
+                    <label class="text-black" for="name">Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="Your name">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="text-black" for="phone">Phone Number</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="Your Phone Number">
+                  </div>
+                </div>
+  
+                <div class="row form-group">
+                  
+                  <div class="col-md-6">
+                    <label class="text-black" for="email">Email</label> 
+                    <input type="email" name="email" class="form-control" placeholder="Your Email ID">
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <label class="text-black" for="subject">Subject</label> 
+                    <input type="subject" name="subject" class="form-control" placeholder="Your Subject of query">
+                  </div>
+                </div>
+  
+                <div class="row form-group">
+                  <div class="col-md-12">
+                    <label class="text-black" for="message">Message</label> 
+                    <textarea name="message"  cols="30" rows="6" class="form-control" placeholder="Write your query here..."></textarea>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <div class="col-md-12 text-center d-flex justify-content-center">
+                   
+                      <button type="submit" class="btn btn-primary p-3 mt-4">Send Message</button>
+                        
+                  </div>
+                </div>
+  
+
+              </form>
+            </div>
+
+            <div class="col-md-5 mb-5">
+              <div class="google-map container-fluid p-0">
+      
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3869.836319648343!2d78.75725579999998!3d14.086837800000009!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb303c34cff7aaf%3A0x5249e95fca3f0376!2sSri%20Sai%20Institute%20Of%20Technology%20And%20Science!5e0!3m2!1sen!2sin!4v1766161891334!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            </div>
+            
+          </div>
+
+         
+        </div>
+      </section>
+  
+
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-5">
+                <h2 class="footer-heading mb-4">About the Project</h2>
+                <p>This is a final year BTech project developed to enhance security in financial systems. The goal is to reduce fraud, protect customer data, and improve trust in digital transactions using machine learning.</p>
+              </div>
+              <div class="col-md-3 ml-auto">
+                <h2 class="footer-heading mb-4">Quick Links</h2>
+                <ul class="list-unstyled">
+                  <li><a href="{% url 'home' %}" class="smoothscroll">Home</a></li>
+                  <li><a href="{% url 'admin_login' %}" class="smoothscroll">Admin</a></li>
+                  <li><a href="{% url 'user_login' %}" class="smoothscroll">User</a></li>
+                  <li><a href="{% url 'about' %}" class="smoothscroll">About Us</a></li>
+                  <li><a href="{% url 'contact' %}" class="smoothscroll">Contact Us</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3 footer-social">
+                <h2 class="footer-heading mb-4">Follow Us</h2>
+                <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row pt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+              <p class="copyright"><small>
+             
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
+            All rights reserved | Designed by SVT
+           </small></p>
+        
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+
+  </div> <!-- .site-wrap -->
+
+  <script src="{% static 'mainapp/js/jquery-3.3.1.min.js'%}"></script>
+  <script src="{% static 'mainapp/js/jquery-ui.js'%}"></script>
+  <script src="{% static 'mainapp/js/popper.min.js'%}"></script>
+  <script src="{% static 'mainapp/js/bootstrap.min.js'%}"></script>
+  <script src="{% static 'mainapp/js/owl.carousel.min.js'%}"></script>
+  <script src="{% static 'mainapp/js/jquery.countdown.min.js'%}"></script>
+  <script src="{% static 'mainapp/js/jquery.easing.1.3.js'%}"></script>
+  <script src="{% static 'mainapp/js/aos.js'%}"></script>
+  <script src="{% static 'mainapp/js/jquery.fancybox.min.js'%}"></script>
+  <script src="{% static 'mainapp/js/jquery.sticky.js'%}"></script>
+  <script src="{% static 'mainapp/js/isotope.pkgd.min.js'%}"></script>
+
+  <script src="{% static 'mainapp/js/main.js' %}"></script>
+
+  
+  </body>
+</html>
