@@ -87,13 +87,32 @@ def upload_dataset(request):
         return redirect('view_dataset')
     return render(request, 'adminapp/admin-uploaddataset.html')
 
-def view_dataset(request):
-    data =datasetModel.objects.all().order_by('-data_id').first()
-    file=str(data.dataset)   
-    df=pd.read_csv(file,index_col=0)
-    table=df.to_html(table_id='data_table')
+# def view_dataset(request):
+#     data =datasetModel.objects.all().order_by('-data_id').first()
+#     file=str(data.dataset)   
+#     df=pd.read_csv(file,index_col=0)
+#     table=df.to_html(table_id='data_table')
 
-    return render(request, 'adminapp/admin-viewdataset.html', {'data' : table})
+#     return render(request, 'adminapp/admin-viewdataset.html', {'data' : table})
+import os
+
+def view_dataset(request):
+    data = datasetModel.objects.all().order_by('-data_id').first()
+
+    if not data or not data.dataset:
+        messages.error(request, "No dataset found!")
+        return redirect('upload_dataset')
+
+    file_path = data.dataset.path   # ✅ IMPORTANT FIX
+
+    if not os.path.exists(file_path):
+        messages.error(request, "File not found on server. Please re-upload dataset.")
+        return redirect('upload_dataset')
+
+    df = pd.read_csv(file_path, index_col=0)
+    table = df.to_html(table_id='data_table')
+
+    return render(request, 'adminapp/admin-viewdataset.html', {'data': table})
 
 
 def delete_dataset(request, id):
@@ -143,18 +162,49 @@ def xgboost(request):
 
 import joblib
 
+# def lr_run(request, id):
+#     data = datasetModel.objects.get(data_id=id)
+#     file = str(data.dataset)
+
+#     df = pd.read_csv(file)
+
+#     model = joblib.load("algorithms/logistic_regression.pkl")
+
+#     # ❗ Logistic was trained WITHOUT engineered features
+#     df = preprocess_data(df, use_engineered=True)   # ✅ CHANGE HERE
+
+#     # 🔥 Ensure only required columns
+#     X = df[feature_columns]
+#     Y = df['isFraud']
+
+#     prediction = model.predict(X)
+
+#     data.lr_accuracy = accuracy_score(Y, prediction)
+#     data.lr_precision = precision_score(Y, prediction)
+#     data.lr_recall = recall_score(Y, prediction)
+#     data.lr_f1_score = f1_score(Y, prediction)
+#     data.lr_algo = 'Logistic Regression'
+
+#     data.save()
+
+#     messages.success(request, 'Logistic Regression executed successfully!')
+#     return redirect('logreg')
 def lr_run(request, id):
     data = datasetModel.objects.get(data_id=id)
-    file = str(data.dataset)
 
-    df = pd.read_csv(file)
+    import os
+    file_path = data.dataset.path   # ✅ FIX
+
+    if not os.path.exists(file_path):
+        messages.error(request, "Dataset missing. Re-upload required.")
+        return redirect('view_dataset')
+
+    df = pd.read_csv(file_path)
 
     model = joblib.load("algorithms/logistic_regression.pkl")
 
-    # ❗ Logistic was trained WITHOUT engineered features
-    df = preprocess_data(df, use_engineered=True)   # ✅ CHANGE HERE
+    df = preprocess_data(df, use_engineered=True)
 
-    # 🔥 Ensure only required columns
     X = df[feature_columns]
     Y = df['isFraud']
 
