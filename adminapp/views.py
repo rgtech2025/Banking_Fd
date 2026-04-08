@@ -109,8 +109,8 @@ def admin_view_profile(request, id):
 import joblib
 
 # 🔹 GLOBAL LOAD (VERY IMPORTANT)
-encoder = joblib.load("R:/OneDrive/Desktop/fd/algorithms/label_encoder.pkl")
-feature_columns = joblib.load("R:/OneDrive/Desktop/fd/algorithms/feature_columns.pkl")
+encoder = joblib.load("algorithms/label_encoder.pkl")
+feature_columns = joblib.load("algorithms/feature_columns.pkl")
 
 def preprocess_data(df, use_engineered=False):
     
